@@ -112,11 +112,13 @@ var mouse = {
   x: innerWidth / 2,
   y: innerHeight / 2
 };
-var colors = ['#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66']; // Event Listeners
-
-addEventListener('mousemove', function (event) {
-  mouse.x = event.clientX;
-  mouse.y = event.clientY;
+var colors = ['#f6d1fb', '#601b91', '#3b0954', '#411470', '#3c4a94', "#0952BD", "#A5BFF0", "#118CD6", "#1AAEE8", "#F2E8C9"];
+var mouseDown = false;
+addEventListener('mousedown', function () {
+  mouseDown = true;
+});
+addEventListener('mouseup', function () {
+  mouseDown = false;
 });
 addEventListener('resize', function () {
   canvas.width = innerWidth;
@@ -124,9 +126,9 @@ addEventListener('resize', function () {
   init();
 }); // Objects
 
-var _Object = /*#__PURE__*/function () {
-  function Object(x, y, radius, color) {
-    _classCallCheck(this, Object);
+var Particle = /*#__PURE__*/function () {
+  function Particle(x, y, radius, color) {
+    _classCallCheck(this, Particle);
 
     this.x = x;
     this.y = y;
@@ -134,11 +136,15 @@ var _Object = /*#__PURE__*/function () {
     this.color = color;
   }
 
-  _createClass(Object, [{
+  _createClass(Particle, [{
     key: "draw",
     value: function draw() {
       c.beginPath();
       c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+      c.shadowColor = this.color;
+      c.shadowBlur = 15;
+      c.shadowOffsetX = 0;
+      c.shadowOffsetY = 0;
       c.fillStyle = this.color;
       c.fill();
       c.closePath();
@@ -150,26 +156,48 @@ var _Object = /*#__PURE__*/function () {
     }
   }]);
 
-  return Object;
+  return Particle;
 }(); // Implementation
 
 
-var objects;
+var particles;
 
 function init() {
-  objects = [];
+  particles = [];
 
-  for (var i = 0; i < 400; i++) {// objects.push()
+  for (var i = 0; i < 400; i++) {
+    var canvasWidth = canvas.width + 300;
+    var canvasHeight = canvas.height + 300;
+    var x = Math.random() * canvasWidth - canvasWidth / 2;
+    var y = Math.random() * canvasHeight - canvasHeight / 2;
+    var radius = 2 * Math.random();
+    var color = colors[Math.floor(Math.random() * colors.length)];
+    particles.push(new Particle(x, y, radius, color));
   }
 } // Animation Loop
 
 
+var radians = 0;
+var alpha = 1;
+
 function animate() {
   requestAnimationFrame(animate);
-  c.clearRect(0, 0, canvas.width, canvas.height);
-  c.fillText('HTML CANVAS BOILERPLATE', mouse.x, mouse.y); // objects.forEach(object => {
-  //  object.update()
-  // })
+  c.fillStyle = "rgba(10, 10, 10, ".concat(alpha, ")");
+  c.fillRect(0, 0, canvas.width, canvas.height);
+  c.save();
+  c.translate(canvas.width / 2, canvas.height / 2);
+  c.rotate(radians);
+  particles.forEach(function (particle) {
+    particle.update();
+  });
+  c.restore();
+  radians += 0.005;
+
+  if (mouseDown && alpha >= 0.02) {
+    alpha -= 0.01;
+  } else if (!mouseDown && alpha < 1) {
+    alpha += 0.01;
+  }
 }
 
 init();

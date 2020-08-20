@@ -1,21 +1,9 @@
-Canvas Boilerplate is the go-to solution for quickly creating modern canvas pieces using ES6 and webpack.
+<h1 align="center">
 
-## Getting Started
+Galactic Light Trails
 
-1.  Clone the repo:
+</h1>
 
-        git clone https://github.com/christopher4lis/canvas-boilerplate.git
+<p align="center">Getting a galactic light trail effect isn't achieved by rotating particles individually—it's actually created by rotating a canvas as a whole. With a few tweaks to rotation, opacity fills, and object randomness, we can create an eye-catching effect that emulates a time-warp in space.</p>
 
-2.  Install dependencies:
-
-        yarn
-
-    or
-
-        npm install
-
-3.  Run webpack:
-
-        npm start
-
-Your canvas piece should open up automatically at http://localhost:3000 and you should see 'HTML CANVAS BOILERPLATE' on hover.
+<p align="center">Deployed <a href="https://codepen.io/elvinciqueira/pen/GRZjBbX">here</a>.</p>
